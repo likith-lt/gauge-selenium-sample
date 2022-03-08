@@ -9,6 +9,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 public class DriverFactory {
 
@@ -33,16 +34,20 @@ public class DriverFactory {
     public void setUp() {
 
         try {
+
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setCapability("browserName", System.getenv("BROWSER"));
-            capabilities.setCapability("version", System.getenv("BROWSER_VERSION"));
-            capabilities.setCapability("platform", System.getenv("PLATFORM"));
-            capabilities.setCapability("build", "Java Gauge Framework");
-            capabilities.setCapability("name", "Sample Gauge Test");
-            capabilities.setCapability("geoLocation", "US");
-            capabilities.setCapability("network", false); // To enable network logs
-            capabilities.setCapability("visual", false); // To enable step by step screenshot
-            capabilities.setCapability("console", false); // To capture console logs
+            capabilities.setCapability("browserVersion", System.getenv("BROWSER_VERSION"));
+            HashMap<String, Object> ltOptions = new HashMap<String, Object>();
+            ltOptions.put("build", "Gauge - Java");
+            ltOptions.put("name", "Gauge Demo Test");
+            ltOptions.put("platformName", System.getenv("PLATFORM"));
+            ltOptions.put("selenium_version","4.0.0");
+            ltOptions.put("geoLocation", "US");
+            ltOptions.put("network", false); // To enable network logs
+            ltOptions.put("visual", false); // To enable step by step screenshot
+            ltOptions.put("console", false); // To capture console logs
+            capabilities.setCapability("LT:Options", ltOptions);
 
             driver = new RemoteWebDriver(new URL("https://" + username + ":" + accesskey + gridURL), capabilities);
         } catch (MalformedURLException e) {
